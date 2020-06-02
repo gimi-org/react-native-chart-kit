@@ -35,6 +35,10 @@ class LineChart extends AbstractChart {
     return dataset.strokeWidth || this.props.chartConfig.strokeWidth || 3;
   };
 
+  getStrokeDashedArray = dataset => {
+    return dataset.strokeDasharray || undefined;
+  };
+
   getDatas = data =>
     data.reduce((acc, item) => (item.data ? [...acc, ...item.data] : acc), []);
 
@@ -419,6 +423,7 @@ class LineChart extends AbstractChart {
         <Path
           key={index}
           d={result}
+          strokeDasharray={this.getStrokeDashedArray(dataset)}
           fill="none"
           stroke={this.getColor(dataset, 0.2)}
           strokeWidth={this.getStrokeWidth(dataset)}
