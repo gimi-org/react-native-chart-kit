@@ -4,6 +4,8 @@ If you're looking to **build a website or a cross-platform mobile app** – we w
 
 [📲See example app](https://github.com/indiespirit/react-native-chart-kit-example)
 
+To try the examples in Expo, please change `main` to `./node_modules/expo/AppEntry.js` in `package.json` before starting things with `expo run`. You'll need to have `expo-cli` installed via `npm install -g expo-cli`.
+
 # React Native Chart Kit Documentation
 
 ## Import components
@@ -99,13 +101,15 @@ const chartConfig = {
 | backgroundGradientToOpacity   | Number             | Defines the second color opacity in the linear gradient of a chart's background                        |
 | fillShadowGradient            | string             | Defines the color of the area under data                                                               |
 | fillShadowGradientOpacity     | Number             | Defines the initial opacity of the area under data                                                     |
-| useShadowColorFromDataset     | Boolean            | Defines the option to use color from dataset to each chart data. Default is false                               |
+| useShadowColorFromDataset     | Boolean            | Defines the option to use color from dataset to each chart data. Default is false                      |
 | color                         | function => string | Defines the base color function that is used to calculate colors of labels and sectors used in a chart |
 | strokeWidth                   | Number             | Defines the base stroke width in a chart                                                               |
 | barPercentage                 | Number             | Defines the percent (0-1) of the available width each bar width in a chart                             |
 | barRadius                     | Number             | Defines the radius of each bar                                                                         |
 | propsForBackgroundLines       | props              | Override styles of the background lines, refer to react-native-svg's Line documentation                |
 | propsForLabels                | props              | Override styles of the labels, refer to react-native-svg's Text documentation                          |
+| propsForVerticalLabels        | props              | Override styles of vertical labels, refer to react-native-svg's Text documentation                     |
+| propsForHorizontalLabels      | props              | Override styles of horizontal labels, refer to react-native-svg's Text documentation                   |
 
 ## Responsive charts
 
@@ -130,7 +134,7 @@ const data = {
       strokeWidth: 2 // optional
     }
   ],
-  legend: ["Rainy Days", "Sunny Days", "Snowy Days"] // optional
+  legend: ["Rainy Days"] // optional
 };
 ```
 
@@ -152,6 +156,8 @@ const data = {
 | withShadow              | boolean                 | Show shadow for line - default: True                                                                                                                                                                                           |
 | withInnerLines          | boolean                 | Show inner dashed lines - default: True                                                                                                                                                                                        |
 | withOuterLines          | boolean                 | Show outer dashed lines - default: True                                                                                                                                                                                        |
+| withVerticalLines       | boolean                 | Show vertical lines - default: True                                                                                                                                                                                            |
+| withHorizontalLines     | boolean                 | Show horizontal lines - default: True                                                                                                                                                                                          |
 | withVerticalLabels      | boolean                 | Show vertical labels - default: True                                                                                                                                                                                           |
 | withHorizontalLabels    | boolean                 | Show horizontal labels - default: True                                                                                                                                                                                         |
 | fromZero                | boolean                 | Render charts from 0 not from the minimum value. - default: False                                                                                                                                                              |
@@ -253,6 +259,7 @@ const data = {
   verticalLabelRotation={30}
 />
 ```
+
 | Property                | Type            | Description                                                                                 |
 | ----------------------- | --------------- | ------------------------------------------------------------------------------------------- |
 | data                    | Object          | Data for the chart - see example above                                                      |
@@ -270,7 +277,6 @@ const data = {
 | showBarTops             | boolean         | Show bar tops                                                                               |
 | showValuesOnTopOfBars   | boolean         | Show value above bars                                                                       |
 
-
 ## StackedBar chart
 
 ![StackedBar_Chart](https://imgur.com/JkBtxt8.jpg)
@@ -279,7 +285,10 @@ const data = {
 const data = {
   labels: ["Test1", "Test2"],
   legend: ["L1", "L2", "L3"],
-  data: [[60, 60, 60], [30, 30, 60]],
+  data: [
+    [60, 60, 60],
+    [30, 30, 60]
+  ],
   barColors: ["#dfe4ea", "#ced6e0", "#a4b0be"]
 };
 ```
@@ -366,17 +375,18 @@ const data = [
 />
 ```
 
-| Property    | Type    | Description                                                                                 |
-| ----------- | ------- | ------------------------------------------------------------------------------------------- |
-| data        | Object  | Data for the chart - see example above                                                      |
-| width       | Number  | Width of the chart, use 'Dimensions' library to get the width of your screen for responsive |
-| height      | Number  | Height of the chart                                                                         |
-| chartConfig | Object  | Configuration object for the chart, see example config in the beginning of this file        |
-| accessor    | string  | Property in the `data` object from which the number values are taken                        |
-| bgColor     | string  | background color - if you want to set transparent, input `transparent` or `none`.           |
-| paddingLeft | string  | left padding of the pie chart                                                               |
-| absolute    | boolean | shows the values as absolute numbers                                                        |
-| hasLegend   | boolean | Defaults to `true`, set it to `false` to remove the legend                                  |
+| Property       | Type    | Description                                                                                       |
+| -------------- | ------- | ------------------------------------------------------------------------------------------------- |
+| data           | Object  | Data for the chart - see example above                                                            |
+| width          | Number  | Width of the chart, use 'Dimensions' library to get the width of your screen for responsive       |
+| height         | Number  | Height of the chart                                                                               |
+| chartConfig    | Object  | Configuration object for the chart, see example config in the beginning of this file              |
+| accessor       | string  | Property in the `data` object from which the number values are taken                              |
+| bgColor        | string  | background color - if you want to set transparent, input `transparent` or `none`.                 |
+| paddingLeft    | string  | left padding of the pie chart                                                                     |
+| absolute       | boolean | shows the values as absolute numbers                                                              |
+| hasLegend      | boolean | Defaults to `true`, set it to `false` to remove the legend                                        |
+| avoidFalseZero | boolean | Defaults to `false`, set it to `true` to display a "<1%" instead of a rounded value equal to "0%" |
 
 ## Contribution graph (heatmap)
 
@@ -490,6 +500,12 @@ Render definitions of background and shadow gradients
   backgroundGradientToOpacity: Number,
 }
 ```
+
+## Compilation
+
+For production use, the package is automatically compiled after installation, so that you can just install it with `npm` and use it out-of-the-box.
+
+To transpile TypeScript into JavaScript for development purposes, you can use either run `npm run build` to compile once, or `npm run dev` to start compilation in watch mode, which will recompile the files on change.
 
 ## More information
 
