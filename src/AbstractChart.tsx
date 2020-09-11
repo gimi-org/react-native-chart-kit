@@ -337,6 +337,7 @@ class AbstractChart<
         | "backgroundGradientToOpacity"
         | "fillShadowGradient"
         | "fillShadowGradientOpacity"
+        | "fillShadowGradientOpacityStop"
       >,
       | "width"
       | "height"
@@ -348,6 +349,7 @@ class AbstractChart<
       | "backgroundGradientToOpacity"
       | "fillShadowGradient"
       | "fillShadowGradientOpacity"
+      | "fillShadowGradientOpacityStop"
     >
   ) => {
     const {
@@ -375,6 +377,12 @@ class AbstractChart<
     )
       ? config.fillShadowGradientOpacity
       : 0.1;
+
+    const fillShadowGradientOpacityStop = config.hasOwnProperty(
+      "fillShadowGradientOpacityStop"
+    )
+      ? config.fillShadowGradientOpacityStop
+      : "0";
 
     return (
       <Defs>
@@ -422,7 +430,7 @@ class AbstractChart<
                     ? dataset.color(fillShadowGradientOpacity)
                     : fillShadowGradient
                 }
-                stopOpacity="0"
+                stopOpacity={fillShadowGradientOpacityStop}
               />
             </LinearGradient>
           ))
@@ -440,7 +448,7 @@ class AbstractChart<
               stopColor={fillShadowGradient}
               stopOpacity={fillShadowGradientOpacity}
             />
-            <Stop offset="1" stopColor={fillShadowGradient} stopOpacity="0" />
+              <Stop offset="1" stopColor={fillShadowGradient} stopOpacity={fillShadowGradientOpacityStop} />
           </LinearGradient>
         )}
       </Defs>
